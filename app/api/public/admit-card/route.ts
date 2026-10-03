@@ -2,6 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getAdmitCardData } from "@/lib/admit-card-data";
 
+function normalizeDob(dobInput: string): string {
+  if (!dobInput) return "";
+  const trimmed = dobInput.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    return trimmed;
+  }
+  const matchDmy = trimmed.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+  if (matchDmy) {
+    const day = matchDmy[1].padStart(2, "0");
+    const month = matchDmy[2].padStart(2, "0");
+    const year = matchDmy[3];
+    return `${year}-${month}-${day}`;
+  }
+  const matchYmd = trimmed.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+  if (matchYmd) {
+    const year = matchYmd[1];
+    const month = matchYmd[2].padStart(2, "0");
+    const day = matchYmd[3].padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  return trimmed;
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const enrollment_no = (body.enrollment_no || body.registration_no || "").trim();
@@ -14,6 +37,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const normalizedDob = normalizeDob(date_of_birth);
   const isYear2 = year && (year.includes("2") || year.toLowerCase().includes("2nd"));
   const yrNum = isYear2 ? 2 : 1;
 
@@ -21,7 +45,7 @@ export async function POST(req: NextRequest) {
     .from("student_registrations")
     .select("id, exam_session_id, exam_session_id_2nd_year, roll_no, roll_no_2nd_year, admit_card_generated_at, admit_card_2nd_year_generated_at")
     .eq("enrollment_no", enrollment_no)
-    .eq("dob", date_of_birth)
+    .eq("dob", normalizedDob)
     .maybeSingle();
 
   if (regError || !reg) {

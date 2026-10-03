@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AdmitCardLayout from "@/components/AdmitCardLayout";
 import PrintButton from "@/components/PrintButton";
+import DobSelectPicker from "@/components/common/DobSelectPicker";
 import { AdmitCardData } from "@/lib/admit-card-data";
 
 export default function PublicAdmitCardLookupPage() {
@@ -216,38 +217,18 @@ export default function PublicAdmitCardLookupPage() {
                 {/* Date of Birth Field */}
                 <div>
                   <label
-                    htmlFor="date_of_birth"
                     className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
                   >
                     Date of Birth / जन्म तिथि <span className="text-red-500">*</span>
                   </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      id="date_of_birth"
-                      type="date"
-                      required
-                      value={dateOfBirth}
-                      onChange={(e) => setDateOfBirth(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm font-medium text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#143E66] focus:border-transparent transition-all"
-                    />
-                  </div>
+                  <DobSelectPicker
+                    idPrefix="admit_card_dob"
+                    value={dateOfBirth}
+                    onChange={setDateOfBirth}
+                    required
+                  />
                   <p className="text-[11px] text-slate-400 mt-1">
-                    Select your exact date of birth as registered.
+                    Select your exact Day, Month and Year of birth as registered.
                   </p>
                 </div>
 
