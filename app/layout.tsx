@@ -64,6 +64,33 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.indianparamedicalboardofindia.com/#website",
+      "url": "https://www.indianparamedicalboardofindia.com",
+      "name": "Indian Paramedical Board of India",
+      "alternateName": ["IPBI", "Indian Paramedical Board"],
+      "description":
+        "Indian Paramedical Board of India Official Portal. Empowering professionals, accrediting institutions, and ensuring the highest standards of paramedical care.",
+      "publisher": {
+        "@id": "https://www.indianparamedicalboardofindia.com/#organization",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.indianparamedicalboardofindia.com/#organization",
+      "name": "Indian Paramedical Board of India",
+      "alternateName": ["IPBI", "Indian Paramedical Board"],
+      "url": "https://www.indianparamedicalboardofindia.com",
+      "logo": "https://www.indianparamedicalboardofindia.com/favicon-512.png",
+      "sameAs": [],
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -75,6 +102,12 @@ export default function RootLayout({
       className={`${inter.variable} ${notoDevanagari.variable} font-sans antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <MaintenanceGuard>
           {children}
